@@ -77,7 +77,8 @@ def main():
         
 
     df = pd.DataFrame.from_dict(event_dict,orient='index')
-
+    df['start'] = df['start'].astype('datetime64[ns]')
+    df['end'] = df['end'].astype('datetime64[ns]')
 
     return df
 
