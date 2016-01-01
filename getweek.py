@@ -71,7 +71,7 @@ def main():
         summary = event['summary']
         start = event['start'].get('dateTime', event['start'].get('date'))
         end = event['end'].get('dateTime', event['start'].get('date'))
-	try:
+        try:
             colorid = event['colorId']
         except KeyError:
             colorid = None
