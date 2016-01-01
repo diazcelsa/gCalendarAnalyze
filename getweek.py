@@ -82,6 +82,11 @@ def main():
     df['start'] = df['start'].astype('datetime64[ns]')
     df['end'] = df['end'].astype('datetime64[ns]')
 
+    df['timedelta'] = df.end - df.start
+    df['time_min'] = df['timedelta'].astype('timedelta64[m]').astype('int')
+    df['hashtags'] = df.summary.str.extract('.*#(.*)')
+
+
     return df
 
 #if __name__ == '__main__':
