@@ -10,11 +10,6 @@ from oauth2client import tools
 import pandas as pd
 import datetime, pytz
 
-try:
-    import argparse
-    flags = argparse.ArgumentParser(parents=[tools.argparser]).parse_args()
-except ImportError:
-    flags = None
 
 SCOPES = 'https://www.googleapis.com/auth/calendar.readonly'
 CLIENT_SECRET_FILE = 'client_secret.json'
@@ -72,16 +67,20 @@ def main():
 
     if not events:
         print('No events found.')
-    row_list = []
-    for event in enumerate(events):
-	start = event['start'].get('dateTime', event['start'].get('date'))
+    event_dict = {}
+    for i,event in enumerate(events):
+        summary = event['summary']
+        start = event['start'].get('dateTime', event['start'].get('date'))
         end = event['end'].get('dateTime', event['start'].get('date'))
-        df.iloc[i] = []
+        event_dict[i] = {'summary':summary,'start':start,'end':end}
+
         
 
-    df = pd.DateFrame(columns=('summary','start','end'))
+    df = pd.DataFrame.from_dict(event_dict,orient='index')
 
 
-if __name__ == '__main__':
-    main()
+    return df
+
+#if __name__ == '__main__':
+#    main()
 
