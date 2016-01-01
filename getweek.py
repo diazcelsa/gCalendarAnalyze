@@ -7,6 +7,7 @@ import oauth2client
 from oauth2client import client
 from oauth2client import tools
 
+import pandas as pd
 import datetime, pytz
 
 try:
@@ -66,11 +67,18 @@ def main():
         orderBy='startTime').execute()
     events = eventsResult.get('items', [])
 
+
+
     if not events:
-        print('No upcoming events found.')
-    for event in events:
-        start = event['start'].get('dateTime', event['start'].get('date'))
-        print(start, event['summary'])
+        print('No events found.')
+    row_list = []
+    for event in enumerate(events):
+	start = event['start'].get('dateTime', event['start'].get('date'))
+        end = event['end'].get('dateTime', event['start'].get('date'))
+        df.iloc[i] = []
+        
+
+    df = pd.DateFrame(columns=('summary','start','end'))
 
 
 if __name__ == '__main__':
