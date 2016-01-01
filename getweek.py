@@ -60,7 +60,6 @@ def main():
     now_info = datetime.datetime.now(pytz.timezone('Europe/Berlin'))
     now = now_info.isoformat() 
     weekbefore = (now_info-datetime.timedelta(days=7)).isoformat()
-    print(now,weekbefore)
     print('Getting the upcoming 10 events')
     eventsResult = service.events().list(
         calendarId='primary', timeMin=weekbefore, timeMax=now, maxResults=10, singleEvents=True,
