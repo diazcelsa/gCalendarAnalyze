@@ -56,7 +56,6 @@ def main():
     now_info = datetime.datetime.now(pytz.timezone('Europe/Berlin'))
     now = now_info.isoformat() 
     weekbefore = (now_info-datetime.timedelta(days=7)).isoformat()
-    print(now,weekbefore)
     print('Getting the upcoming 10 events')
     eventsResult = service.events().list(
         calendarId='primary', timeMin=weekbefore, timeMax=now, maxResults=10, singleEvents=True,
@@ -72,9 +71,12 @@ def main():
         summary = event['summary']
         start = event['start'].get('dateTime', event['start'].get('date'))
         end = event['end'].get('dateTime', event['start'].get('date'))
-        event_dict[i] = {'summary':summary,'start':start,'end':end}
+	try:
+            colorid = event['colorId']
+        except KeyError:
+            colorid = None
+        event_dict[i] = {'summary':summary,'start':start,'end':end,'colorId':colorid}
 
-        
 
     df = pd.DataFrame.from_dict(event_dict,orient='index')
     df['start'] = df['start'].astype('datetime64[ns]')
