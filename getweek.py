@@ -75,10 +75,16 @@ def main():
     for event in enumerate(events):
 	start = event['start'].get('dateTime', event['start'].get('date'))
         end = event['end'].get('dateTime', event['start'].get('date'))
+	start = event['start'].get('dateTime')
+	try:
+            colorid = event['colorId']
+        except KeyError:
+            colorid = None
+	print(start, event['summary'], colorid)
         df.iloc[i] = []
         
 
-    df = pd.DateFrame(columns=('summary','start','end'))
+    df = pd.DateFrame(columns=('summary','start','end','colorId'))
 
 
 if __name__ == '__main__':
