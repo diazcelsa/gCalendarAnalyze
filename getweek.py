@@ -7,7 +7,7 @@ import oauth2client
 from oauth2client import client
 from oauth2client import tools
 
-import datetime
+import datetime, pytz
 
 try:
     import argparse
@@ -57,11 +57,13 @@ def main():
     credentials = get_credentials()
     http = credentials.authorize(httplib2.Http())
     service = discovery.build('calendar', 'v3', http=http)
-
-    now = datetime.datetime.utcnow().isoformat() + 'Z' # 'Z' indicates UTC time
+    now_info = datetime.datetime.now(pytz.timezone('Europe/Berlin'))
+    now = now_info.isoformat() 
+    weekbefore = (now_info-datetime.timedelta(days=7)).isoformat()
+    print(now,weekbefore)
     print('Getting the upcoming 10 events')
     eventsResult = service.events().list(
-        calendarId='primary', timeMin=, timeMax=now, maxResults=10, singleEvents=True,
+        calendarId='primary', timeMin=weekbefore, timeMax=now, maxResults=10, singleEvents=True,
         orderBy='startTime').execute()
     events = eventsResult.get('items', [])
 
